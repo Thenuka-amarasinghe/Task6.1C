@@ -1,0 +1,78 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building the code using Maven...'
+            }
+        }
+        stage('Unit and Integration Tests') {
+            steps {
+                echo 'Running unit tests using JUnit...'
+                echo 'Running integration tests using Selenium...'
+            }
+            post {
+                success {
+                    emailext attachLog: true, 
+                            body: 'Unit and Integration Tests is successfully executed, please find the logs attached to this email', 
+                            subject: 'Unit and Integration Tests - Success', 
+                            to: 'amarasinghe.thenuka@gmail.com'
+                }
+                failure {
+                    emailext attachLog: true, 
+                            body: 'Unit and Integration Tests failed to execute, please find the logs attached to this email', 
+                            subject: 'Unit and Integration Tests - Failure', 
+                            to: 'amarasinghe.thenuka@gmail.com'
+                }
+            }
+        }
+        stage('Code Analysis') {
+            steps {
+                echo 'Running code analysis using SonarQube...'
+            }
+        }
+        stage('Security Scan') {
+            steps {
+                echo 'Performing security scan using OWASP ZAP...'
+            }
+            post {
+                success {
+                    emailext attachLog: true, 
+                            body: 'Security Scan is successfully executed, please find the logs attached to this email', 
+                            subject: 'Security Scan - Success', 
+                            to: 'amarasinghe.thenuka@gmail.com'
+                }
+                failure {
+                    emailext attachLog: true, 
+                            body: 'Security Scan failed to execute, please find the logs attached to this email', 
+                            subject: 'Security Scan - Failure', 
+                            to: 'amarasinghe.thenuka@gmail.com'
+                }
+            }
+        }
+        stage('Deploy to Staging') {
+            steps {
+                echo 'Deploying the application to staging server...'
+            }
+        }
+        stage('Integration Tests on Staging') {
+            steps {
+                echo 'Running integration tests on staging environment...'
+            }
+        }
+        stage('Deploy to Production') {
+            steps {
+                echo 'Deploying the application to production server...'
+            }
+        }
+    }
+    post{
+        success{
+            echo "Pipeline successfully executed"
+        }
+        failure{
+            echo "Pipeline failed"
+        }
+    }
+}
