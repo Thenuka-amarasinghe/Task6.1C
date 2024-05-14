@@ -39,13 +39,13 @@ pipeline {
             post {
                 success {
                     emailext attachLog: true, 
-                            body: 'Security Scan is successfully executed, please find the logs attached to this email. Thank you', 
+                            body: 'Security Scan is successfully executed, please find the logs attached to this email.', 
                             subject: 'Security Scan - Success', 
                             to: 'amarasinghe.thenuka@gmail.com'
                 }
                 failure {
                     emailext attachLog: true, 
-                            body: 'Security Scan failed to execute, please find the logs attached to this email. Thank you', 
+                            body: 'Security Scan failed to execute, please find the logs attached to this email.', 
                             subject: 'Security Scan - Failure', 
                             to: 'amarasinghe.thenuka@gmail.com'
                 }
